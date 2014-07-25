@@ -1,4 +1,7 @@
 #-*- coding: utf-8 -*
+
+#使用说明 打开终端到该脚本文件夹，运行命令python findContainFiles.py 即可
+
 import os
 import sys
 import getopt
@@ -53,7 +56,7 @@ Keyword =  raw_input('请输入文件名(部分或完整,回车可跳过):') or 
 Type =  raw_input('请输入文件类型(回车可跳过):') or None
 Dirname = raw_input('请输入搜索路径(跳过表示用户目录):') or '.'
 isMatch = raw_input('是否完全匹配关键词(y/n):') or 'y'
-
+Dirname = Dirname.strip()
 if isMatch != 'y':
 	RegStr = '(?i)'+RegStr
 
