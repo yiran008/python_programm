@@ -28,7 +28,7 @@ def isValid(keyword,filefullname,resulttype):
 
 def Search(keyword,filetype,dirname,regStr):
 	re_search = re.compile(regStr)
-	result = open('/Users/liumiao/result.txt','w')
+	#result = open('/Users/liumiao/result.txt','w')
 	totalcount = 0
 	successcount = 0
 	for root, dirs, fileList in os.walk(dirname):
@@ -37,40 +37,25 @@ def Search(keyword,filetype,dirname,regStr):
 				totalcount += 1
 				filepath = os.path.join(root, f);
 				with open (filepath,'r') as f:
-					for line in f.readlines(): 
-						classname = re.findall(regStr,line)
-						if len(classname)>0:
-							result.write(classname[0]+'\n')
-							successcount += 1
-							print filepath
-	result.close()
+					classname = re.findall(regStr,f.read())
+					if len(classname)>0:
+							#result.write(classname[0]+'\n')
+						successcount += 1
+						print filepath
+	#result.close()
 	print '%d success'%successcount
 	
 #   查找包含指定字符串的文件，可以指定文件名称，文件类型，查找文件夹，是否完全匹配:
 #   -m 是否完全匹配 -f:文件名称 -t:文件类型名 -d:搜索文件夹路径 -k:指定字符串
 
-opts, args = getopt.getopt(sys.argv[1:], "hmf:t:d:k:")
+RegStr = raw_input('请输入关键词:') or '.*'
+Keyword =  raw_input('请输入文件名(部分或完整,回车可跳过):') or None
+Type =  raw_input('请输入文件类型(回车可跳过):') or None
+Dirname = raw_input('请输入搜索路径(跳过表示用户目录):') or '.'
+isMatch = raw_input('是否完全匹配关键词(y/n):') or 'y'
 
-Keyword =  None
-Type =  None
-RegStr = '.*'
-Dirname = '.'
-isMatch = False
-for op, value in opts:
-    if op == "-f":
-        Keyword = value
-    elif op == "-t":
-        Type = value
-    elif op == "-d":
-        Dirname = value
-    elif op == "-k":
-        RegStr = value
-    elif op == "-m":
-    	isMatch = True
-    elif op == "-h":
-    	sys.exit()
-
-if isMatch == False:
+if isMatch != 'y':
 	RegStr = '(?i)'+RegStr
+
 Search(Keyword,Type,Dirname,RegStr)
 
